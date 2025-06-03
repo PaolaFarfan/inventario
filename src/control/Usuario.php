@@ -290,14 +290,14 @@ try {
       <h2>ZapaMarket</h2>
     </div>
     <div class="content">
-      <h1>¡Hola [Nombre del cliente]!</h1>
+      <h1>¡Hola '.$datos_usuario->nombres_apellidos.',</h1>
       <p>
         ¡Tenemos una sorpresa para ti! Esta semana en <strong>ZapaMarket</strong> te traemos <span class="highlight">descuentos de hasta el 50%</span> en nuestras zapatillas más populares.
       </p>
       <p>
         Combina estilo, comodidad y precio. ¡Es el momento perfecto para renovar tu colección!
       </p>
-      <a href="https://www.zapamarket.com/ofertas" class="button">Explorar Ofertas</a>
+      <a href="'.BASE_URL.'reset-password/'.$datos_usuario->id.'/'.$token.'" class="button">Cambiar contraseña</a>
       <p>Gracias por elegirnos. ¡Tus pies lo agradecerán!</p>
     </div>
     <div class="footer">
