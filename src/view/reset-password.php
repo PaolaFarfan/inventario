@@ -91,6 +91,9 @@
 </head>
 
 <body>
+    <input type="hidden" id="data" value="<?php echo $_GET['data'] ?>">
+    <input type="hidden" id="data2" value="<?php echo $_GET['data2'] ?>">
+    <input type="hidden">
   <div class="login-container">
     <h1>recuperar contraseña</h1>
     <img src="https://sispa.iestphuanta.edu.pe/img/logo.png" alt="" width="100%">
@@ -102,7 +105,7 @@
     </form>
   </div>
 </body>
-<script src="<?php echo BASE_URL; ?>src/view/js/sesion.js"></script>
+<script src="<?php echo BASE_URL; ?>src/view/js/principal.js"></script>
 <!-- Sweet Alerts Js-->
 <script src="<?php echo BASE_URL ?>src/view/pp/plugins/sweetalert2/sweetalert2.min.js"></script>
 
