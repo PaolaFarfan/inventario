@@ -24,6 +24,10 @@
       padding: 20px;
       text-align: center;
     }
+    .header img {
+      max-width: 150px;
+      margin-bottom: 15px;
+    }
     .header h2 {
       margin: 0;
       font-size: 26px;
@@ -82,6 +86,7 @@
 <body>
   <div class="container">
     <div class="header">
+      <img src="https://www.google.com/imgres?q=imagen%20de%20alta%20pinta&imgurl=https%3A%2F%2Fi.pinimg.com%2F736x%2Fa7%2F85%2F3c%2Fa7853cf8e00fe2ab75b67608885a7ecc.jpg&imgrefurl=https%3A%2F%2Fes.pinterest.com%2Fpin%2F740138520044707363%2F&docid=55DrmNpIWSWOZM&tbnid=u6KJrT5pZVpoPM&vet=12ahUKEwju3fjEw9WNAxXnGbkGHa_7LoMQM3oECG8QAA..i&w=657&h=652&hcb=2&itg=1&ved=2ahUKEwju3fjEw9WNAxXnGbkGHa_7LoMQM3oECG8QAA" alt="Alta Pinta">
       <h2>ZapaMarket</h2>
     </div>
     <div class="content">
