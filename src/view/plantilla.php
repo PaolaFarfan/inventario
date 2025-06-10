@@ -6,6 +6,10 @@ require_once "./src/control/vistas_control.php";
 
 $mostrar = new vistasControlador();
 $vista = $mostrar->obtenerVistaControlador();
+$reset = '';
+if ($vista =="reset_passsword") {
+    $reset = "reset_password";
+}
 
 if (isset($_SESSION['sesion_id']) && isset($_SESSION['sesion_token'])) {
 
@@ -44,6 +48,9 @@ if (isset($_SESSION['sesion_id']) && isset($_SESSION['sesion_token'])) {
     }
 }
 
+if ($reset =="reset_passsword") {
+    $vista = "reset_password";
+}
 if ($vista == "login" || $vista == "404" || $vista == "reset-password") {
     require_once "./src/view/" . $vista . ".php";
 } else {

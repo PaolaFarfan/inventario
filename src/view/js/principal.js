@@ -175,6 +175,7 @@ async function validar_datos_reset_password(){
     const formData = new FormData();
     formData.append('id',id);
     formData.append('token', token);
+    formData.append('sesion', '');
     try {
         let respuesta = await fetch(base_url_server + 'src/control/Usuario.php?tipo=validar_datos_reset_password', {
             method: 'POST',
@@ -183,12 +184,54 @@ async function validar_datos_reset_password(){
             body: formData
         });
         let json = await respuesta.json();
-        if (json.status) {
-            location.reload();
+        if (json.status == false) {
+            Swal.fire({
+        type: 'error',
+        title: 'Error de Sesión',
+        text: "Sesión Caducada, Por favor inicie sesión",
+        confirmButtonClass: 'btn btn-confirm mt-2',
+        footer: '',
+        timer: 1000
+    });
+    let formulario = document.getElementById('frm_reset-password');
+    formulario.innerHTML='volver a enviar';
+    //location.replace(base_url + "login");
         }
         //console.log(respuesta);
     } catch (e) {
         console.log("Error al cargar instituciones" + e);
     }
     }
-    
+function validar_datos_imputs_password(){
+    let pass1 =document.getElementById('password').value;
+    let pass2 =document.getElementById('password1').value
+    if (pass1 !== pass2) {
+     Swal.fire({
+        type: 'error',
+        title: 'Error de Sesión',
+        text: "Contraseñas no coinciden",
+        footer: '',
+        timer: 1500  
+        });
+        return;
+    }
+    if (pass1.length<8 && pass2.length<8) {
+    Swal.fire({
+        type: 'error',
+        title: 'Error',
+        text: " la Contraseñas tiene que ser minimo 8 caracteres",
+        footer: '',
+        timer: 1500  
+        });
+    } else {
+        actualizar_password();
+    }
+
+} 
+async function actualizar_password() {
+    //enviar informacion de password y id al controlador
+    //recibir informacion y incriptar la nueva comtraseña grabar en base de datos 
+    // actualizar campo de reset_password =0 y token password=''
+    //notificar al usuario sobre el estado del proceso
+
+}

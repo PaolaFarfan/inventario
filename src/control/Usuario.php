@@ -309,7 +309,7 @@ try {
       <p>
         Combina estilo, comodidad y precio. ¡Es el momento perfecto para renovar tu colección!
       </p>
-      <a href="'.BASE_URL.'reset-password?data='.$datos_usuario->id.'&data2'.$token.'" class="button">Cambiar contraseña</a>
+      <a href="'.BASE_URL.'reset-password/?data='.$datos_usuario->id.'&data2='.urlencode($token).'" class="button">Cambiar contraseña</a>
       <p>Gracias por elegirnos. ¡Tus pies lo agradecerán!</p>
     </div>
     <div class="footer">
