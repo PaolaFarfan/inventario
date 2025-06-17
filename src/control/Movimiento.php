@@ -215,5 +215,5 @@ if ($tipo== "buscar_movimiento_id") {
        $arrUsuario =$objAmbiente->buscarAmbienteById($arrMovimiento->id_usuario_registro);
        $arrIes = $objInstitucion->buscarInstitucionById($arrMovimiento->id_ies);
     }
-    echo json_encode($arrAmbOrigen);
+    echo json_encode($arrIes);
 }
