@@ -186,7 +186,7 @@ class MYPDF extends TCPDF {
     // Método para definir el encabezado de cada página
     public function Header() {
         // Logo opcional - descomenta la siguiente línea si tienes un logo
-         $this->Image('https://iestphuanta.edu.pe/wp-content/uploads/2021/12/logo_tecno-1-2.png', 10, 8, 30);
+         $this->Image('https://iestphuanta.edu.pe/wp-content/uploads/2021/12/logo_tecno-1-2.png', 20, 8, 40);
         
         // Configurar fuente para el título principal
         $this->SetFont('helvetica', 'B', 15);
@@ -227,7 +227,7 @@ class MYPDF extends TCPDF {
 $pdf = new MYPDF(); // Usar nuestra clase personalizada
 // Configurar información del documento
 $pdf->SetCreator(PDF_CREATOR);                           // Creador del PDF
-$pdf->SetAuthor('Jasmina Avalos');                       // Autor del documento
+$pdf->SetAuthor('Paola Astrid');                       // Autor del documento
 $pdf->SetTitle('Reporte de movimientos - ' . date('d/m/Y')); // Título con fecha
 $pdf->SetSubject('Papeleta de Rotación de Bienes');     // Asunto
 $pdf->SetKeywords('movimiento, bienes, patrimonial, rotacion'); // Palabras clave
