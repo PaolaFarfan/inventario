@@ -37,7 +37,5 @@ for ($n2=1; $n2 < 12; $n2++) {
 }
 */
 
-
-
 $writer = new Xlsx($spreadsheet);
 $writer->save('hello world.xlsx');
