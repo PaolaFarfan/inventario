@@ -1,6 +1,5 @@
 <?php
-
-$curl = curl_init(); //inicia la sesión cURL
+    $curl = curl_init(); //inicia la sesión cURL
     curl_setopt_array($curl, array(
         CURLOPT_URL => BASE_URL_SERVER."src/control/Institucion.php?tipo=listar&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
         CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
@@ -25,17 +24,15 @@ $curl = curl_init(); //inicia la sesión cURL
         echo "cURL Error #:" . $err; // mostramos el error
     } else {
         $respuesta = json_decode($response);
-
-        $bienes = $respuesta->bienes;
-      //print_r($respuesta);
-
-      $contenido_pdf = ' ';
-      $contenido_pdf = '
+        $contenido = $respuesta->contenido;
+       // print_r($respuesta);
+      $contenido_pdf = '';
+     $contenido_pdf = '
            <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Papeleta de Rotación de Bienes</title>
+  <title>Lista de instituciones</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -91,18 +88,7 @@ $curl = curl_init(); //inicia la sesión cURL
       text-align: right;
       margin-top: 30px;
     }
-.firma-container {
-    display: flex;
-    justify-content: space-around; /* Espacio entre las firmas */
-    margin-top: 30px; /* Espaciado opcional arriba */
-  }
-
-  .firma {
-    text-align: center;
-    width: 45%; /* Ajusta según tu necesidad */
-  }
-
-  table {
+       table {
     border-collapse: collapse;
     width: 100%;
     font-size: 9pt;
@@ -115,88 +101,79 @@ $curl = curl_init(); //inicia la sesión cURL
   thead th {
     background-color: #f2f2f2;
     font-weight: bold;
-  }
 
   </style>
 </head>
 <body>
 
-  <h2>LISTA DE Instituciones</h2>
-
+  <h2>LISTA DE INSTITUCIONES</h2>
 
   <table>
     <thead>
       <tr>
         <th>ITEM</th>
-        <th>CÓDIGO PATRIMONIAL</th>
-        <th>NOMBRE DEL BIEN</th>
-        <th>MARCA</th>
-        <th>COLOR</th>
-        <th>MODELO</th>
-        <th>ESTADO</th>
+        <th>BENEFICIARIO</th>
+        <th>CODIGO MODULAR</th>
+        <th>RUC</th>
+        <th>NOMBRE</th>
       </tr>
     </thead>
       <tbody>
       ';
  
     $contador = 1;
-    $instituciones = $respuesta->instituciones;
-foreach ($instituciones as $inst) {
+    foreach ($contenido as $institucion) {
        $contenido_pdf .= "<tr>";
         $contenido_pdf .=  "<td>" . $contador . "</td>";
-        $contenido_pdf .=  "<td>" . $bien->cod_patrimonial . "</td>";
-        $contenido_pdf .=  "<td>" . $bien->denominacion . "</td>";
-        $contenido_pdf .=  "<td>" . $bien->marca . "</td>";
-        $contenido_pdf .=  "<td>" . $bien->color . "</td>";
-        $contenido_pdf .=  "<td>" . $bien->modelo . "</td>";
-        $contenido_pdf .=  "<td>" . $bien->estado_conservacion . "</td>";
+        $contenido_pdf .=  "<td>" . $institucion->beneficiarioname . "</td>";
+        $contenido_pdf .=  "<td>" . $institucion->cod_modular . "</td>";
+        $contenido_pdf .=  "<td>" . $institucion->ruc . "</td>";
+        $contenido_pdf .=  "<td>" . $institucion->nombre . "</td>";
         $contenido_pdf .=  "</tr>";
         $contador +=1;
     }
-if (isset($respuesta->movimiento->fecha_registro) && $respuesta->movimiento->fecha_registro != '') {
-                setlocale(LC_TIME, 'es_ES.UTF-8', 'spanish');
-                $fecha = strtotime($respuesta->movimiento->fecha_registro);
-                // Si no funciona setlocale en el servidor, usar un array de meses en español
-                $meses = [
-                    1 => 'enero',
-                    2 => 'febrero',
-                    3 => 'marzo',
-                    4 => 'abril',
-                    5 => 'mayo',
-                    6 => 'junio',
-                    7 => 'julio',
-                    8 => 'agosto',
-                    9 => 'septiembre',
-                    10 => 'octubre',
-                    11 => 'noviembre',
-                    12 => 'diciembre'
-                ];
-                $dia = date('d', $fecha);
-                $mes = $meses[(int)date('m', $fecha)];
-                $anio = date('Y', $fecha);
-                $contenido_pdf.= "Ayacucho, $dia de $mes del $anio";
-            }
+      
+            $meses = [
+                1 => 'enero',
+                2 => 'febrero',
+                3 => 'marzo',
+                4 => 'abril',
+                5 => 'mayo',
+                6 => 'junio',
+                7 => 'julio',
+                8 => 'agosto',
+                9 => 'septiembre',
+                10 => 'octubre',
+                11 => 'noviembre',
+                12 => 'diciembre'
+            ];
+
+            $dia = date('d');
+            $mes = $meses[(int)date('m')];
+            $anio = date('Y');
+
+            $contenido_pdf .= "Ayacucho, $dia de $mes del $anio";
 
 $contenido_pdf .= '
     </tbody>
   </table>
 
+
+
   <div class="firma-container">
-  <div class="firma">
-    <p>------------------------------</p> 
-    <p>ENTREGUÉ CONFORME</p>
+    <div class="firma">
+      <p>------------------------------</p>
+      <p>ENTREGUÉ CONFORME</p>
+    </div>
+    <div class="firma">
+      <p>------------------------------</p>
+      <p>RECIBÍ CONFORME</p>
+    </div>
   </div>
-  <div class="firma">
-    <p>------------------------------</p>
-    <p>RECIBÍ CONFORME</p>
-  </div>
-</div>
 
 </body>
 </html>
 ';
-
-
    
 require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 
@@ -266,7 +243,7 @@ $pdf = new MYPDF();
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Paola');
-$pdf->SetTitle('listar instituciones');
+$pdf->SetTitle('lista instituciones');
 
 // 10. CONFIGURAR MÁRGENES Y PÁGINA
 $pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
@@ -288,5 +265,5 @@ $pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
 // 12. GENERAR Y MOSTRAR EL PDF
 // Generar archivo PDF con nombre único (incluye fecha y hora)
-$pdf->Output('listar_instituciones_' . date('Ymd_His') . '.pdf', 'I');
+$pdf->Output('lista_instituciones_' . date('Ymd_His') . '.pdf', 'I');
     }
