@@ -13,6 +13,9 @@
         </div>
         <div class="card">
             <div class="card-body">
+                <a href="<?= BASE_URL ?>imprimir-ambiente" class="btn btn-danger waves-effect waves-light">
+                    <i class="fa fa-file-pdf"></i>PDF
+                </a>
                 <h4 class="card-title">Filtros de Búsqueda</h4>
                     <div class="row col-12">
                         <div class="form-group row mb-3 col-6">
