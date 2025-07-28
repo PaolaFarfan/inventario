@@ -21,8 +21,8 @@ $objUsuario = new UsuarioModel();
 $objAdmin = new AdminModel();
 
 //variables de sesion
-$id_sesion = $_POST['sesion'];
-$token = $_POST['token'];
+$id_sesion = $_REQUEST['sesion'];
+$token = $_REQUEST['token'];
 
 if ($tipo == "validar_datos_reset_password") {
   $id_email = $_POST['id'];
