@@ -121,7 +121,7 @@ $curl = curl_init(); //inicia la sesión cURL
 </head>
 <body>
 
-  <h2>LISTA DE BIENES</h2>
+  <h2>LISTA DE Instituciones</h2>
 
 
   <table>
