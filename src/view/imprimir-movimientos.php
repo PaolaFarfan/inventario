@@ -25,9 +25,9 @@
 echo htmlspecialchars($response);
 echo "</pre>";
 die(); // Detén la ejecución temporalmente
-     $respuest = json_decode($response);
+     $respuesta = json_decode($response);
 
-     $movimientos = $respuest->movimientos;
+     $contenido = $respuesta->contenido;
 
       $new_Date = new DateTime();
       $dia = $new_Date->format('d');
@@ -88,16 +88,30 @@ die(); // Detén la ejecución temporalmente
 <table>
   <thead>
     <tr>
-      <th>ITEM</th>
-      <th>AMBIENTE</th>
-      <th>DESTINO</th>
-      <th>USUARIO</th>
-      <th>FECHA REGISTRO</th>
-      <th>DESCRIPCION</th>
-      <th>INSTITUCION</th>
-    </tr>
+        <th>ITEM</th>
+        <th>AMBIENTE ORIGEN</th>
+        <th>AMBIENTE DESTINO</th>
+        <th>USUARIO REGISTRO</th>
+        <th>FECHA</th>
+        <th>DESCRIPCION</th>
+        <th>INSTITUCION</th>
+      </tr>
   </thead>
-  <tbody>';   
+  <tbody>
+
+  '; $contador = 1;
+    foreach ($contenido as $movimientos) {
+       $contenido_pdf .= "<tr>";
+        $contenido_pdf .=  "<td>" . $contador . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->origen . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->destino . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->usuario . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->fecha_registro . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->descripcion . "</td>";
+        $contenido_pdf .=  "<td>" . $movimientos->institucion . "</td>";
+        $contenido_pdf .=  "</tr>";
+        $contador +=1;
+    }  
 
    
 require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
