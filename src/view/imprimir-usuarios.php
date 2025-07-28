@@ -185,7 +185,7 @@ require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 class MYPDF extends TCPDF {
     public function Header() {
         // URL de las imágenes
-        $logo_left  = 'https://iestphuanta.edu.pe/';
+        $logo_left  = 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Fiestphuanta.edu.pe%2F&psig=AOvVaw295xp-Wdo4vocQt2AwMM03&ust=1753823418134000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKj-38C74I4DFQAAAAAdAAAAABAJ';
         $logo_right = 'https://dreayacucho.gob.pe/storage/directory/lCcjIpyYl7E5tQjWegZVLZvp1ZIMbY-metaWk9PRUEybXNRUGlYWWtKRng0SkxqcG9SRW5jTEZuLW1ldGFiRzluYnk1d2JtYz0tLndlYnA=-.webp';
 
         // Logo izquierdo
