@@ -140,45 +140,7 @@ $contenido_pdf .='  </tbody>
   </td>
  </tr>
 </table>
-
 </body>
-</html>';
-         $contador = 1;
-        foreach ($instituciones as $institucion) {
-             $contenido_pdf .= '<tr>';
-             $contenido_pdf .=  "<td>".  $contador . "</td>";
-             $contenido_pdf .=  "<td>".  $institucion->beneficiario . "</td>";
-             $contenido_pdf .= "<td>" .  $institucion->cod_modular . "</td>";
-             $contenido_pdf .=  "<td>".  $institucion->ruc . "</td>";
-             $contenido_pdf .=  "<td>".  $institucion->nombre. "</td>";
-             $contenido_pdf .=  '</tr>';
-             $contador ++;
-        }
- $contenido_pdf .='  </tbody>
-  </table> 
-
-  <div class="fecha">
-    Ayacucho, '. $dia . " de " . $meses[$mesNumero] . " del " . $año.'
-  </div>
-<table  class="firma-section">
-  <tr>
-  <td>
-    <div>
-      ------------------------------<br>
-      ENTREGUÉ CONFORME
-    </div>
-    </td>
-    <td>
-    <div>
-      ------------------------------<br>
-      RECIBÍ CONFORME
-    </div>
-    </td>
-   </tr>
-  </table>
-
-</body>
-</html>
 ';
 
 
