@@ -109,6 +109,13 @@ class UsuarioModel
         return $arrRespuesta;
     }
 
-
+    public function listarUsuarios(){
+        $arrRespuesta = array();
+      $sql = $this->conexion->query("SELECT * FROM usuarios");
+      while ($objeto = $sql->fetch_object()) {
+          array_push($arrRespuesta, $objeto);
+      }
+      return $arrRespuesta;
+  }
 
 }
