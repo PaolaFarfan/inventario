@@ -1,146 +1,183 @@
 <?php
+    $curl = curl_init(); //inicia la sesión cURL
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => BASE_URL_SERVER."src/control/Usuario.php?tipo=listarUsarios&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
+        CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
+        CURLOPT_FOLLOWLOCATION => true, //sigue el encabezado que le envíe el servidor
+        CURLOPT_ENCODING => "", // permite decodificar la respuesta y puede ser"identity", "deflate", y "gzip", si está vacío recibe todos los disponibles.
+        CURLOPT_MAXREDIRS => 10, // Si usamos CURLOPT_FOLLOWLOCATION le dice el máximo de encabezados a seguir
+        CURLOPT_TIMEOUT => 30, // Tiempo máximo para ejecutar
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // usa la versión declarada
+        CURLOPT_CUSTOMREQUEST => "GET", // el tipo de petición, puede ser PUT, POST, GET o Delete dependiendo del servicio
+        CURLOPT_HTTPHEADER => array(
+            "x-rapidapi-host: ".BASE_URL_SERVER,
+            "x-rapidapi-key: XXXX"
+        ), //configura las cabeceras enviadas al servicio
+    )); //curl_setopt_array configura las opciones para una transferencia cURL
 
-    $curl = curl_init(); 
-      curl_setopt_array($curl, array(
-      CURLOPT_URL => BASE_URL_SERVER."src/control/Usuario.php?tipo=listarUsuarios&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'],
-      CURLOPT_RETURNTRANSFER => true, 
-      CURLOPT_FOLLOWLOCATION => true, 
-      CURLOPT_ENCODING => "", 
-      CURLOPT_MAXREDIRS => 10, 
-      CURLOPT_TIMEOUT => 30, 
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, 
-      CURLOPT_CUSTOMREQUEST => "GET", 
-      CURLOPT_HTTPHEADER => array(
-          "x-rapidapi-host: ".BASE_URL_SERVER,
-          "x-rapidapi-key: XXXX"
-      ), 
-  )); 
-  $response = curl_exec($curl); 
-  $err = curl_error($curl); 
-  curl_close($curl); 
-  if ($err) {
-      echo "cURL Error #:" . $err; 
-  } else {
-     $respuesta = json_decode($response);
+    $response = curl_exec($curl); // respuesta generada
+    $err = curl_error($curl); // muestra errores en caso de existir
 
-     $usuarios = $respuesta->usuarios;
+    curl_close($curl); // termina la sesión 
 
-      $new_Date = new DateTime();
-      $dia = $new_Date->format('d');
-      $año = $new_Date->format('Y');
-      $mesNumero = (int)$new_Date->format('n'); 
-      $meses = [1 => 'Enero',2 => 'Febrero',3 => 'Marzo', 4 => 'Abril',5 => 'Mayo', 6 => 'Junio', 7 => 'Julio',8 => 'Agosto',9 => 'Septiembre',10 => 'Octubre',11 => 'Noviembre', 12 => 'Diciembre'];
-
-     $contenido_pdf = '';
-
-     $contenido_pdf .= '<!DOCTYPE html>
+    if ($err) {
+        echo "cURL Error #:" . $err; // mostramos el error
+    } else {
+        $respuesta = json_decode($response);
+        $contenido = $respuesta->usuarios;
+       // print_r($respuesta);
+      $contenido_pdf = '';
+     $contenido_pdf = '
+           <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Papeleta de Rotación de ambientes</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-  }
-  h2 {
-    text-align: center;
-    text-transform: uppercase;
-  }
-  .info {
-    margin-bottom: 20px;
-    line-height: 1.8;
-  }
-  .info b {
-    display: inline-block;
-    width: 80px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size:9px;
-  }
-  th, td {
-    border: 1px solid black;
-    text-align: center;
-    padding: 6px;
-  }
-  .fecha {
-    margin-top: 30px;
-    text-align: right;
-  }
-
-  .firma-section tr td{
-     border: none;
+  <meta charset="UTF-8">
+  <title>Lista de usuarios</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
     }
 
-</style>
+    h2 {
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .info {
+      margin-bottom: 20px;
+    }
+
+    .info p {
+      margin: 5px 0;
+    }
+
+    .info span.label {
+      font-weight: bold;
+      display: inline-block;
+      width: 100px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+
+    th, td {
+      text-align: center;
+      padding: 5px;
+    }
+
+    .firma-container {
+      margin-top: 80px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .firma {
+      text-align: center;
+    }
+
+    .fecha {
+      text-align: right;
+      margin-top: 30px;
+    }
+       table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9pt;
+  }
+  th, td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+  }
+  thead th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+
+  </style>
 </head>
 <body>
 
-<h2>REPORTE DE USUARIOS</h2>
+  <h2>LISTA DE USUARIOS</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ITEM</th>
+        <th>DNI</th>
+        <th>NOMBRE TY APELLIDOS</th>
+        <th>CORREO</th>
+        <th>TELEFONO</th>
+        <th>ESTADO</th>
+        <th>FECHA REGISTRO</th>
+      </tr>
+    </thead>
+      <tbody>
+      ';
+ 
+    $contador = 1;
+    foreach ($contenido as $usuario) {
+       $contenido_pdf .= "<tr>";
+        $contenido_pdf .=  "<td>" . $contador . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->dni . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->nombres_apellidos . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->correo . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->telefono . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->estado . "</td>";
+        $contenido_pdf .=  "<td>" . $usuario->fecha_registro . "</td>";
+        $contenido_pdf .=  "</tr>";
+        $contador +=1;
+    }
+      
+            $meses = [
+                1 => 'enero',
+                2 => 'febrero',
+                3 => 'marzo',
+                4 => 'abril',
+                5 => 'mayo',
+                6 => 'junio',
+                7 => 'julio',
+                8 => 'agosto',
+                9 => 'septiembre',
+                10 => 'octubre',
+                11 => 'noviembre',
+                12 => 'diciembre'
+            ];
+
+            $dia = date('d');
+            $mes = $meses[(int)date('m')];
+            $anio = date('Y');
+
+            $contenido_pdf .= "Ayacucho, $dia de $mes del $anio";
+
+$contenido_pdf .= '
+    </tbody>
+  </table>
 
 
-<table>
-  <thead>
-    <tr>
-      <th>ITEM</th>
-      <th>DNI</th>
-      <th>NOMBRES Y APELLIDOS</th>
-      <th>CORREO</th>
-      <th>TELEFONO</th>
-      <th>ESTADO</th>
-      <th>FECHA REGISTRO</th>
-    </tr>
-  </thead>
-  <tbody>';  
 
-       $contador = 1;
-      foreach ($contenido as $usuario) {
-             if ($usuario->estado = 1) {
-      $usuario->estado = "activo";
-   } elseif($usuario->estado = 0){
-      $usuario->estado = "inactivo";
-   }
-           $contenido_pdf .= '<tr>';
-           $contenido_pdf .=  "<td>".  $contador . "</td>";
-           $contenido_pdf .=  "<td>".  $usuario->dni . "</td>";
-           $contenido_pdf .= "<td>" .  $usuario->nombres_apellidos . "</td>";
-           $contenido_pdf .=  "<td>".  $usuario->correo . "</td>";
-           $contenido_pdf .=  "<td>".  $usuario->telefono. "</td>";
-           $contenido_pdf .=  "<td>".  $usuario->estado. "</td>";
-           $contenido_pdf .= "<td>" .  $usuario->fecha_registro . "</td>";
-           $contenido_pdf .=  '</tr>';
-           $contador ++;
-      }
-$contenido_pdf .='  </tbody>
-</table> 
-
-<div class="fecha">
-  Ayacucho, '. $dia . " de " . $meses[$mesNumero] . " del " . $año.'
-</div>
-<table  class="firma-section">
-<tr>
-<td>
-  <div>
-    ------------------------------<br>
-    ENTREGUÉ CONFORME
+  <div class="firma-container">
+    <div class="firma">
+      <p>------------------------------</p>
+      <p>ENTREGUÉ CONFORME</p>
+    </div>
+    <div class="firma">
+      <p>------------------------------</p>
+      <p>RECIBÍ CONFORME</p>
+    </div>
   </div>
-  </td>
-  <td>
-  <div>
-    ------------------------------<br>
-    RECIBÍ CONFORME
-  </div>
-  </td>
- </tr>
-</table>
+
 </body>
-';
-
-
-   
+</html>
+';  
 require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 
 // 8. CREAR CLASE PERSONALIZADA PARA ENCABEZADO Y PIE DE PÁGINA
