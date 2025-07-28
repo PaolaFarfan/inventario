@@ -140,7 +140,8 @@ $curl = curl_init(); //inicia la sesión cURL
       ';
  
     $contador = 1;
-    foreach ($bienes as $bien) {
+    $instituciones = $respuesta->instituciones;
+foreach ($instituciones as $inst) {
        $contenido_pdf .= "<tr>";
         $contenido_pdf .=  "<td>" . $contador . "</td>";
         $contenido_pdf .=  "<td>" . $bien->cod_patrimonial . "</td>";
