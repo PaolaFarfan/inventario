@@ -181,47 +181,69 @@ $contenido_pdf .= "
 // 7. CARGAR LIBRERÍA TCPDF
 require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 
+
 // 8. CREAR CLASE PERSONALIZADA PARA ENCABEZADO Y PIE DE PÁGINA
 class MYPDF extends TCPDF {
-    // Método para definir el encabezado de cada página
     public function Header() {
-        // Logo opcional - descomenta la siguiente línea si tienes un logo
-         $this->Image('https://iestphuanta.edu.pe/wp-content/uploads/2021/12/logo_tecno-1-2.png', 20, 8, 40);
-        
-        // Configurar fuente para el título principal
-        $this->SetFont('helvetica', 'B', 15);
-        // Crear celda con el título centrado
-        $this->Cell(0, 15, 'INSTITUTO DE EDUCACION SUPERIOR TECNOLOGICO PUBLICO - "HUANTA" ', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-        $this->Ln(10); // Salto de línea
-        
-        // Configurar fuente para el subtítulo
+        // URL de las imágenes
+        $logo_left  = 'https://iestphuanta.edu.pe/';
+        $logo_right = 'https://dreayacucho.gob.pe/storage/directory/lCcjIpyYl7E5tQjWegZVLZvp1ZIMbY-metaWk9PRUEybXNRUGlYWWtKRng0SkxqcG9SRW5jTEZuLW1ldGFiRzluYnk1d2JtYz0tLndlYnA=-.webp';
+
+        // Logo izquierdo
+        $this->Image($logo_left, 15, 10, 25);  
+        // Logo derecho
+        $this->Image($logo_right, 170, 10, 25); 
+
+        // Título principal 
+        $this->SetXY(55, 12); // desplazado al centro 
+        $this->SetFont('helvetica', 'B', 11);
+        $this->SetTextColor(0, 70, 140); // Azul fuerte
+        $this->Cell(100, 6, 'INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO', 0, 1, 'C');
+
+        // Subtítulo
+        $this->SetX(55);
+        $this->SetFont('helvetica', 'B', 11);
+        $this->SetTextColor(0, 70, 140); // Gris oscuro
+        $this->Cell(100, 6, '"HUANTA"', 0, 1, 'C');
+
+         // contenido
+        $this->SetX(55, 12);
         $this->SetFont('helvetica', 'I', 10);
-        // Crear celda con el subtítulo centrado
-        $this->Cell(0, 10, 'Sistema de Control Patrimonial', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-        $this->Ln(5); // Salto de línea
-        
-        // Dibujar línea horizontal separadora
-        $this->Line(15, 35, 195, 35);
-        $this->Ln(5); // Salto de línea
+        $this->SetTextColor(85, 85, 85); // Gris oscuro
+        $this->Cell(100, 6, 'Sistema de Control Patrimonial', 0, 1, 'C');
+
+        // Línea decorativa azul
+        $this->SetDrawColor(52, 152, 219);
+        $this->SetLineWidth(0.8);
+        $this->Line(15, 44, 195, 44);
+
+        $this->Ln(5); // Espacio adicional
     }
 
-    // Método para definir el pie de página
-    public function Footer() {
-        // Posicionarse a 15 mm del final de la página
-        $this->SetY(-15);
-        // Configurar fuente para el pie de página
-        $this->SetFont('helvetica', 'I', 8);
-        
-        // Dibujar línea horizontal separadora
-        $this->Line(15, $this->GetY() - 5, 195, $this->GetY() - 5);
-        
-        // Información de generación del documento (lado izquierdo)
-        $this->Cell(0, 10, 'Documento generado el ' . date('d/m/Y H:i:s'), 0, false, 'L', 0, '', 0, false, 'T', 'M');
-        
-        // Numeración de páginas (lado derecho)
-        $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . ' de ' . $this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+  public function Footer() {
+    // Posicionar a 15 mm del final de la página
+    $this->SetY(-15);
+
+    // Línea superior del footer
+    $this->SetDrawColor(189, 195, 199);
+    $this->SetLineWidth(0.5);
+    $this->Line(15, $this->GetY() - 5, 195, $this->GetY() - 5);
+
+    // Estilo del texto
+    $this->SetFont('helvetica', 'I', 8);
+    $this->SetTextColor(100, 100, 100);
+
+    // Texto de número de página centrado
+    $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . ' de ' . $this->getAliasNbPages(), 0, 0, 'C');
+
+    // Reset de estilo
+    $this->SetTextColor(0, 0, 0);
+    $this->SetLineWidth(0.2);
+
     }
 }
+
+
 
 // 9. CREAR INSTANCIA DEL PDF Y CONFIGURAR PROPIEDADES
 $pdf = new MYPDF(); // Usar nuestra clase personalizada
