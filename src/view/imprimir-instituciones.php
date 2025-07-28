@@ -33,7 +33,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Lista de instituciones</title>
-  <style>
+    <style>
     body {
       font-family: Arial, sans-serif;
       margin: 40px;
