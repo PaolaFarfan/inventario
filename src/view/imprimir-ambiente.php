@@ -183,8 +183,8 @@ require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 class MYPDF extends TCPDF {
     public function Header() {
        
-        $logo_left  = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABjBsifx4kJK7C6ewR1dqJ8DGpEoKk6McLQ&s';
-        $logo_right = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_BSnUuKJh7yQ05Oav2g2R4W3L0o99TfFS-A&s';
+        $logo_left  = 'https://iestphuanta.edu.pe/wp-content/uploads/2021/12/logo_tecno-1-2.png';
+        $logo_right = 'https://dreayacucho.gob.pe/storage/directory/lCcjIpyYl7E5tQjWegZVLZvp1ZIMbY-metaWk9PRUEybXNRUGlYWWtKRng0SkxqcG9SRW5jTEZuLW1ldGFiRzluYnk1d2JtYz0tLndlYnA=-.webp';
 
        $this->Image($logo_left, 15, 10, 38, 30); 
       $this->Image($logo_right, 170, 10, 25, 25);
