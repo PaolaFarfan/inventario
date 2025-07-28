@@ -1,200 +1,233 @@
 <?php
-$ruta = explode("/", $_GET['views']);
-//if (!isset($ruta[1]) || $ruta[1]=="") { //si no existe la informacion
-    //header ("location: " .BASE_URL. "bienes");
-//}
-
-    $curl = curl_init(); 
+    $curl = curl_init(); //inicia la sesión cURL
     curl_setopt_array($curl, array(
-    CURLOPT_URL => BASE_URL_SERVER."src/control/Ambiente.php?tipo=listarTodosAmbientes&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'],
-    CURLOPT_RETURNTRANSFER => true, 
-    CURLOPT_FOLLOWLOCATION => true, 
-    CURLOPT_ENCODING => "", 
-    CURLOPT_MAXREDIRS => 10, 
-    CURLOPT_TIMEOUT => 30, 
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, 
-    CURLOPT_CUSTOMREQUEST => "GET", 
-    CURLOPT_HTTPHEADER => array(
-        "x-rapidapi-host: ".BASE_URL_SERVER,
-        "x-rapidapi-key: XXXX"
-    ), 
-)); 
-$response = curl_exec($curl); 
-$err = curl_error($curl); 
-curl_close($curl); 
-if ($err) {
-    echo "cURL Error #:" . $err; 
-} else {
+        CURLOPT_URL => BASE_URL_SERVER."src/control/Ambiente.php?tipo=listarAmbientes&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
+        CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
+        CURLOPT_FOLLOWLOCATION => true, //sigue el encabezado que le envíe el servidor
+        CURLOPT_ENCODING => "", // permite decodificar la respuesta y puede ser"identity", "deflate", y "gzip", si está vacío recibe todos los disponibles.
+        CURLOPT_MAXREDIRS => 10, // Si usamos CURLOPT_FOLLOWLOCATION le dice el máximo de encabezados a seguir
+        CURLOPT_TIMEOUT => 30, // Tiempo máximo para ejecutar
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, // usa la versión declarada
+        CURLOPT_CUSTOMREQUEST => "GET", // el tipo de petición, puede ser PUT, POST, GET o Delete dependiendo del servicio
+        CURLOPT_HTTPHEADER => array(
+            "x-rapidapi-host: ".BASE_URL_SERVER,
+            "x-rapidapi-key: XXXX"
+        ), //configura las cabeceras enviadas al servicio
+    )); //curl_setopt_array configura las opciones para una transferencia cURL
 
-   $respuesta = json_decode($response);
+    $response = curl_exec($curl); // respuesta generada
+    $err = curl_error($curl); // muestra errores en caso de existir
 
-   $ambientes = $respuesta->contenido;
+    curl_close($curl); // termina la sesión 
 
-    $new_Date = new DateTime();
-    $dia = $new_Date->format('d');
-    $año = $new_Date->format('Y');
-    $mesNumero = (int)$new_Date->format('n'); 
-    $meses = [1 => 'Enero',2 => 'Febrero',3 => 'Marzo', 4 => 'Abril',5 => 'Mayo', 6 => 'Junio', 7 => 'Julio',8 => 'Agosto',9 => 'Septiembre',10 => 'Octubre',11 => 'Noviembre', 12 => 'Diciembre'];
-
-   $contenido_pdf = '';
-
-   $contenido_pdf .= '<!DOCTYPE html>
+    if ($err) {
+        echo "cURL Error #:" . $err; // mostramos el error
+    } else {
+        $respuesta = json_decode($response);
+        $contenido = $respuesta->contenido;
+      $contenido_pdf = '';
+     $contenido_pdf = '
+           <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Papeleta de Rotación de ambientes</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 40px;
-}
-h2 {
-  text-align: center;
-  text-transform: uppercase;
-}
-.info {
-  margin-bottom: 20px;
-  line-height: 1.8;
-}
-.info b {
-  display: inline-block;
-  width: 80px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  font-size:9px;
-}
-th, td {
-  border: 1px solid black;
-  text-align: center;
-  padding: 6px;
-}
-.fecha {
-  margin-top: 30px;
-  text-align: right;
-}
+  <meta charset="UTF-8">
+  <title>Lista de ambientes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
 
-.firma-section tr td{
-   border: none;
+    h2 {
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .info {
+      margin-bottom: 20px;
+    }
+
+    .info p {
+      margin: 5px 0;
+    }
+
+    .info span.label {
+      font-weight: bold;
+      display: inline-block;
+      width: 100px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+    }
+
+    th, td {
+      text-align: center;
+      padding: 5px;
+    }
+
+    .firma-container {
+      margin-top: 80px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .firma {
+      text-align: center;
+    }
+
+    .fecha {
+      text-align: right;
+      margin-top: 30px;
+    }
+       table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9pt;
   }
+  th, td {
+    border: 1px solid #000;
+    padding: 4px;
+    text-align: center;
+  }
+  thead th {
+    background-color: #f2f2f2;
+    font-weight: bold;
 
-</style>
+  </style>
 </head>
 <body>
 
-<h2>REPORTE DE AMBIENTES</h2>
+  <h2>LISTA DE AMBIENTES</h2>
 
-<table>
-<thead>
-  <tr>
-    <th>ITEM</th>
-    <th>INSTITUCION</th>
-    <th>ENCARGADO</th>
-    <th>CODIGO</th>
-    <th>DETALLE</th>
-    <th>OTROS DETALLES</th>
-  </tr>
-</thead>
-<tbody>';    
-     $contador = 1;
-    foreach ($ambientes as $ambiente) {
-         $contenido_pdf .= '<tr>';
-         $contenido_pdf .=  "<td>".  $contador . "</td>";
-         $contenido_pdf .=  "<td>".  $ambiente->institucion . "</td>";
-         $contenido_pdf .= "<td>" .  $ambiente->encargado . "</td>";
-         $contenido_pdf .=  "<td>".  $ambiente->codigo . "</td>";
-         $contenido_pdf .=  "<td>".  $ambiente->detalle. "</td>";
-         $contenido_pdf .=  "<td>".  $ambiente->otros_detalle. "</td>";
-         $contenido_pdf .=  '</tr>';
-         $contador ++;
+  <table>
+    <thead>
+      <tr>
+        <th>ITEM</th>
+        <th>INSTITUCION</th>
+        <th>ENCARGADO</th>
+        <th>CODIGO</th>
+        <th>DETALLE</th>
+        <th>OTROS DETALLES</th>
+      </tr>
+    </thead>
+      <tbody>
+      ';
+ 
+    $contador = 1;
+    foreach ($contenido as $ambiente) {
+       $contenido_pdf .= "<tr>";
+        $contenido_pdf .=  "<td>" . $contador . "</td>";
+        $contenido_pdf .=  "<td>" . $ambiente->institucion . "</td>";
+        $contenido_pdf .=  "<td>" . $ambiente->encargado . "</td>";
+        $contenido_pdf .=  "<td>" . $ambiente->codigo . "</td>";
+        $contenido_pdf .=  "<td>" . $ambiente->detalle . "</td>";
+        $contenido_pdf .=  "<td>" . $ambiente->otros_detalle . "</td>";
+        $contenido_pdf .=  "</tr>";
+        $contador +=1;
     }
-$contenido_pdf .='  </tbody>
-</table> 
+      
+            $meses = [
+                1 => 'enero',
+                2 => 'febrero',
+                3 => 'marzo',
+                4 => 'abril',
+                5 => 'mayo',
+                6 => 'junio',
+                7 => 'julio',
+                8 => 'agosto',
+                9 => 'septiembre',
+                10 => 'octubre',
+                11 => 'noviembre',
+                12 => 'diciembre'
+            ];
 
-<div class="fecha">
-Ayacucho, '. $dia . " de " . $meses[$mesNumero] . " del " . $año.'
-</div>
-<table  class="firma-section">
-<tr>
-<td>
-<div>
-  ------------------------------<br>
-  ENTREGUÉ CONFORME
-</div>
-</td>
-<td>
-<div>
-  ------------------------------<br>
-  RECIBÍ CONFORME
-</div>
-</td>
-</tr>
-</table>
+            $dia = date('d');
+            $mes = $meses[(int)date('m')];
+            $anio = date('Y');
+
+            $contenido_pdf .= "Ayacucho, $dia de $mes del $anio";
+
+$contenido_pdf .= '
+    </tbody>
+  </table>
+
+
+
+  <div class="firma-container">
+    <div class="firma">
+      <p>------------------------------</p>
+      <p>ENTREGUÉ CONFORME</p>
+    </div>
+    <div class="firma">
+      <p>------------------------------</p>
+      <p>RECIBÍ CONFORME</p>
+    </div>
+  </div>
 
 </body>
-</html>';
+</html>
+';
 
-
+  
    
 require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
 
-// 8. CREAR CLASE PERSONALIZADA PARA ENCABEZADO Y PIE DE PÁGINA
 class MYPDF extends TCPDF {
     public function Header() {
-        // URL de las imágenes
-        $logo_left  = 'https://iestphuanta.edu.pe/wp-content/uploads/2021/12/logo_tecno-1-2.png';
-        $logo_right = 'https://dreayacucho.gob.pe/storage/directory/lCcjIpyYl7E5tQjWegZVLZvp1ZIMbY-metaWk9PRUEybXNRUGlYWWtKRng0SkxqcG9SRW5jTEZuLW1ldGFiRzluYnk1d2JtYz0tLndlYnA=-.webp';
+       
+        $logo_left  = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSABjBsifx4kJK7C6ewR1dqJ8DGpEoKk6McLQ&s';
+        $logo_right = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_BSnUuKJh7yQ05Oav2g2R4W3L0o99TfFS-A&s';
 
-        // Logo izquierdo
-        $this->Image($logo_left, 15, 10, 25);  
-        // Logo derecho
-        $this->Image($logo_right, 170, 10, 25); 
+       $this->Image($logo_left, 15, 10, 38, 30); 
+      $this->Image($logo_right, 170, 10, 25, 25);
 
-        // Título principal 
-        $this->SetXY(55, 12); // desplazado al centro 
+
+        $this->SetXY(55, 12); 
         $this->SetFont('helvetica', 'B', 11);
-        $this->SetTextColor(0, 70, 140); // Azul fuerte
-        $this->Cell(100, 6, 'INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO', 0, 1, 'C');
+        $this->SetTextColor(0, 70, 140); 
+        $this->Cell(100, 6, 'GOBIERNO REGIONAL DE AYACUCHO', 0, 1, 'C');
 
-        // Subtítulo
+       
         $this->SetX(55);
-        $this->SetFont('helvetica', 'B', 11);
-        $this->SetTextColor(0, 70, 140); // Gris oscuro
-        $this->Cell(100, 6, '"HUANTA"', 0, 1, 'C');
-
-         // contenido
-        $this->SetX(55, 12);
         $this->SetFont('helvetica', 'I', 10);
-        $this->SetTextColor(85, 85, 85); // Gris oscuro
-        $this->Cell(100, 6, 'Sistema de Control Patrimonial', 0, 1, 'C');
+        $this->SetTextColor(85, 85, 85); 
+        $this->Cell(100, 6, 'DIRECCIÓN REGIONAL DE EDUCACIÓN DE AYACUCHO', 0, 1, 'C');
 
-        // Línea decorativa azul
+
+        $this->SetX(55);
+        $this->SetFont('helvetica', 'I', 10);
+        $this->SetTextColor(85, 85, 85); 
+        $this->Cell(100, 6, 'DIRECCION DE ADMINISTRACION', 0, 1, 'C');
+
+
         $this->SetDrawColor(52, 152, 219);
         $this->SetLineWidth(0.8);
         $this->Line(15, 44, 195, 44);
 
-        $this->Ln(5); // Espacio adicional
+        $this->Ln(5); 
     }
 
   public function Footer() {
-    // Posicionar a 15 mm del final de la página
     $this->SetY(-15);
 
-    // Línea superior del footer
     $this->SetDrawColor(189, 195, 199);
     $this->SetLineWidth(0.5);
     $this->Line(15, $this->GetY() - 5, 195, $this->GetY() - 5);
 
-    // Estilo del texto
     $this->SetFont('helvetica', 'I', 8);
     $this->SetTextColor(100, 100, 100);
 
-    // Texto de número de página centrado
     $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . ' de ' . $this->getAliasNbPages(), 0, 0, 'C');
 
-    // Reset de estilo
+  
     $this->SetTextColor(0, 0, 0);
     $this->SetLineWidth(0.2);
 
@@ -203,30 +236,24 @@ class MYPDF extends TCPDF {
 
 
 $pdf = new MYPDF();
-// set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Paola');
-$pdf->SetTitle('Lista ambientes');
+$pdf->SetTitle('lista de ambientes');
 
-// 10. CONFIGURAR MÁRGENES Y PÁGINA
 $pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);                
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);  
 
-// Configurar salto de página automático
+
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-// Configurar fuente por defecto
 $pdf->SetFont('helvetica', '', 8);
 
-// Agregar nueva página
+
 $pdf->AddPage();
 
-// 11. INSERTAR CONTENIDO HTML EN EL PDF
-// Convertir HTML a PDF y renderizarlo
+
 $pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
-// 12. GENERAR Y MOSTRAR EL PDF
-// Generar archivo PDF con nombre único (incluye fecha y hora)
 $pdf->Output('lista_ambientes_' . date('Ymd_His') . '.pdf', 'I');
-    }
+}
