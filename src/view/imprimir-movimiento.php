@@ -197,7 +197,7 @@ class MYPDF extends TCPDF {
         // Título principal 
         $this->SetXY(55, 12); // desplazado al centro 
         $this->SetFont('helvetica', 'B', 11);
-        $this->SetTextColor(0, 70, 140); // Azul fuerte
+        $this->SetTextColor(0, 0, 0); //negro
         $this->Cell(100, 6, 'INSTITUTO DE EDUCACIÓN SUPERIOR TECNOLÓGICO PÚBLICO', 0, 1, 'C');
 
         // Subtítulo

@@ -192,7 +192,7 @@ class MYPDF extends TCPDF {
 
         $this->SetXY(55, 12); 
         $this->SetFont('helvetica', 'B', 11);
-        $this->SetTextColor(0, 70, 140); 
+        $this->SetTextColor(85, 85, 85); 
         $this->Cell(100, 6, 'GOBIERNO REGIONAL DE AYACUCHO', 0, 1, 'C');
 
        
