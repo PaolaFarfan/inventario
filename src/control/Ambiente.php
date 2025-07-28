@@ -13,8 +13,8 @@ $objAdmin = new AdminModel();
 $objInstitucion = new InstitucionModel();
 
 //variables de sesion
-$id_sesion = $_POST['sesion'];
-$token = $_POST['token'];
+$id_sesion =$_REQUEST['sesion'];
+$token = $_REQUEST['token'];
 
 if ($tipo == "listar") {
     $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
@@ -164,28 +164,39 @@ if ($tipo == "datos_registro") {
     }
     echo json_encode($arr_Respuesta);
 }
-if($tipo == "listarTodosAmbientes"){
-    $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
-  if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {  
-      $arr_Respuesta = array('status' => false, 'contenido' => '');
-      $resAmbiente = $objAmbiente->listarAmbientes();
-      $arr_contenido = [];
-      if (!empty($resAmbiente)) {
-          
-          for ($i = 0; $i < count($resAmbiente); $i++) {
-              $institucion = $objInstitucion->buscarInstitucionById($resAmbiente[$i]->id_ies);
-              $arr_contenido[$i] = (object) [];
-              $arr_contenido[$i]->institucion = $institucion->nombre;
-              $arr_contenido[$i]->id = $resAmbiente[$i]->id;
-              $arr_contenido[$i]->encargado = $resAmbiente[$i]->encargado;
-              $arr_contenido[$i]->codigo = $resAmbiente[$i]->codigo;
-              $arr_contenido[$i]->detalle = $resAmbiente[$i]->detalle;
-              $arr_contenido[$i]->otros_detalle = $resAmbiente[$i]->otros_detalle;
+if ($tipo == "buscar_ambientes") {
+    $arr_Respuesta = array('status' => false, 'msg' => 'Error_sesion');
 
-          }
-          $arr_Respuesta['status'] = true;
-          $arr_Respuesta['contenido'] = $arr_contenido;
-      }
-  }
-  echo json_encode($arr_Respuesta);
+    if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
+
+        $ambientes = $objAmbiente->obtenerTodosLosAmbientes();
+
+        $arr_Respuesta['status'] = true;
+        $arr_Respuesta['msg'] = 'correcto';
+        $arr_Respuesta['ambientes'] = $ambientes;
+    }
+
+    echo json_encode($arr_Respuesta);
+}
+if ($tipo == "listarAmbientes") {
+    $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
+    if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
+        $arr_Ambiente = $objAmbiente->listarAmbientes();
+        $arr_contenido = [];
+        if (!empty($arr_Ambiente)) {
+            for ($i = 0; $i < count($arr_Ambiente); $i++) {
+                $institucion = $objInstitucion->buscarInstitucionById($arr_Ambiente[$i]->id_ies);
+
+                $arr_contenido[$i] = (object) [];
+                $arr_contenido[$i]->institucion = $institucion->nombre;
+                $arr_contenido[$i]->encargado = $arr_Ambiente[$i]->encargado;
+                $arr_contenido[$i]->codigo = $arr_Ambiente[$i]->codigo;
+                $arr_contenido[$i]->detalle = $arr_Ambiente[$i]->detalle;
+                $arr_contenido[$i]->otros_detalle = $arr_Ambiente[$i]->otros_detalle;
+            }
+            $arr_Respuesta['status'] = true;
+            $arr_Respuesta['contenido'] = $arr_contenido;
+        }
+    }
+    echo json_encode($arr_Respuesta);
 }
