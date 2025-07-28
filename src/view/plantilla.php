@@ -59,7 +59,7 @@ if ($vista == "login" || $vista == "404" || $vista == "reset-password") {
     }
 
     include $vista; 
-    if ($vista !='./src/view/imprimir-movimiento.php' && $vista !='./src/view/reporte-bienes.php' && $vista !='./src/view/imprimir-usuarios.php) {
+    if ($vista !='./src/view/imprimir-movimiento.php' && $vista !='./src/view/reporte-bienes.php' && $vista !='./src/view/imprimir-usuarios.php'  ) {
          include "./src/view/include/footer.php";
     }     
    
