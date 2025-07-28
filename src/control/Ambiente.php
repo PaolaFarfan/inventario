@@ -44,22 +44,24 @@ if ($tipo == "listar") {
 if ($tipo == "listarAmbientes") {
     $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
     if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
-        $arr_Ambiente = $objAmbiente->listarAmbientes();
-        $arr_contenido = [];
-        if (!empty($arr_Ambiente)) {
-            for ($i = 0; $i < count($arr_Ambiente); $i++) {
-                $institucion = $objInstitucion->buscarInstitucionById($arr_Ambiente[$i]->id_ies);
+        $arr_Ambiente = $objAmbiente->obtenerTodosLosAmbientes();
+$arr_contenido = [];
 
-                $arr_contenido[$i] = (object) [];
-                $arr_contenido[$i]->institucion = $institucion->nombre;
-                $arr_contenido[$i]->encargado = $arr_Ambiente[$i]->encargado;
-                $arr_contenido[$i]->codigo = $arr_Ambiente[$i]->codigo;
-                $arr_contenido[$i]->detalle = $arr_Ambiente[$i]->detalle;
-                $arr_contenido[$i]->otros_detalle = $arr_Ambiente[$i]->otros_detalle;
-            }
-            $arr_Respuesta['status'] = true;
-            $arr_Respuesta['contenido'] = $arr_contenido;
-        }
+if (!empty($arr_Ambiente)) {
+    foreach ($arr_Ambiente as $amb) {
+        $obj = (object)[
+            'institucion' => $amb->nombre_institucion,
+            'encargado' => $amb->encargado,
+            'codigo' => $amb->codigo,
+            'detalle' => $amb->detalle,
+            'otros_detalle' => $amb->otros_detalle
+        ];
+        $arr_contenido[] = $obj;
+    }
+    $arr_Respuesta['status'] = true;
+    $arr_Respuesta['contenido'] = $arr_contenido;
+}
+
     }
     echo json_encode($arr_Respuesta);
 }
