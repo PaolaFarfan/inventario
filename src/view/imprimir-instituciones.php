@@ -6,7 +6,7 @@ $ruta = explode("/", $_GET['views']);
 
 $curl = curl_init(); //inicia la sesión cURL
     curl_setopt_array($curl, array(
-        CURLOPT_URL => BASE_URL_SERVER."src/control/Bien.php?tipo=listarBienes&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
+        CURLOPT_URL => BASE_URL_SERVER."src/control/Bien.php?tipo=listar&sesion=".$_SESSION['sesion_id']."&token=".$_SESSION['sesion_token'], //url a la que se conecta
         CURLOPT_RETURNTRANSFER => true, //devuelve el resultado como una cadena del tipo curl_exec
         CURLOPT_FOLLOWLOCATION => true, //sigue el encabezado que le envíe el servidor
         CURLOPT_ENCODING => "", // permite decodificar la respuesta y puede ser"identity", "deflate", y "gzip", si está vacío recibe todos los disponibles.
@@ -269,7 +269,7 @@ $pdf = new MYPDF();
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Paola');
-$pdf->SetTitle('lista de instituciones');
+$pdf->SetTitle('listar instituciones');
 
 // 10. CONFIGURAR MÁRGENES Y PÁGINA
 $pdf->SetMargins(PDF_MARGIN_LEFT, 45, PDF_MARGIN_RIGHT); 
@@ -291,5 +291,5 @@ $pdf->writeHTML($contenido_pdf, true, false, true, false, '');
 
 // 12. GENERAR Y MOSTRAR EL PDF
 // Generar archivo PDF con nombre único (incluye fecha y hora)
-$pdf->Output('listar-instituciones_' . date('Ymd_His') . '.pdf', 'I');
+$pdf->Output('listar_instituciones_' . date('Ymd_His') . '.pdf', 'I');
     }
