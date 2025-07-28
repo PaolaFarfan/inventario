@@ -334,12 +334,6 @@ try {
        // print_r($token);
     }
 } 
-<<<<<<< HEAD
-//enviar informacion de password y id al controlador usuario
-    //recibir informacion y encriptar la nueva contraseña
-    //guardar en base de datos y actualizar campo de reset_password= 0 y token_password = ''
-    //notificar a usuario sobre el estado del proceso
-=======
 if ($tipo == 'actualizar_password_reset') {
     $id = $_POST['id'];
     $token_email = $_POST['token'];
