@@ -95,4 +95,12 @@ class MovimientoModel
         }
         return $arrRespuesta;
     }
+    public function listarMovimientos(){
+        $respues = array();
+        $sql = $this->conexion->query("SELECT * FROM movimientos");
+        while ($objeto = $sql->fetch_object()) {
+            array_push($respues, $objeto);
+        }
+        return $respues;
+    }
 }
