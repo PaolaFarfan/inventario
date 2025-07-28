@@ -28,11 +28,12 @@ class InstitucionModel
     public function buscarInstitucionOrdenado()
     {
         $sql = $this->conexion->query("SELECT * FROM institucion order by nombre ASC");
-        $arrRespuesta = array();
-        while ($objeto = $sql->fetch_object()) {
-            array_push($arrRespuesta, $objeto);
-        }
-        return $arrRespuesta;
+        $respuesta = array();
+$sql = $this->conexion->query("SELECT * FROM usuarios");
+while ($objeto = $sql->fetch_object()) {
+    array_push($respuesta, $objeto); // bien
+}
+return $respuesta; // correcto
     }
     public function buscarInstitucionById($id)
     {
