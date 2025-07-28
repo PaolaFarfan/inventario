@@ -334,3 +334,7 @@ try {
        // print_r($token);
     }
 } 
+//enviar informacion de password y id al controlador usuario
+    //recibir informacion y encriptar la nueva contraseña
+    //guardar en base de datos y actualizar campo de reset_password= 0 y token_password = ''
+    //notificar a usuario sobre el estado del proceso
