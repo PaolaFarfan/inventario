@@ -367,15 +367,16 @@ if ($tipo == 'actualizar_password_reset') {
     
     echo json_encode($arrRespuesta);
 }
-if($tipo == "listarUsuarios"){
-  $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
-  if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
- $arr_usuarios = $objUsuario->listarUsuarios();
 
- $arr_Respuesta['usuarios'] = $arr_usuarios;
- $arr_Respuesta['status'] = true;
- $arr_Respuesta['msg'] = 'correcto';
-  }
-  echo json_encode($arr_Respuesta);
+if($tipo == "listarUsuarios"){
+    $arr_Respuesta = array('status' => false, 'msg' => 'Error_Sesion');
+    if ($objSesion->verificar_sesion_si_activa($id_sesion, $token)) {
+        $arrUusario = $objUsuario->listarUsuarios();
+        $arr_Respuesta['usuarios'] = $arrUusario;
+        $arr_Respuesta['status'] = true;
+        $arr_Respuesta['msg'] = 'bien echo';
+    }
+    echo json_encode($arr_Respuesta);
+
 }
->>>>>>> 4e51575d4597bd79867cca6877f97ba4cff31699
+

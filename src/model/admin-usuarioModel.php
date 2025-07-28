@@ -113,9 +113,9 @@ class UsuarioModel
         $arrRespuesta = array();
       $sql = $this->conexion->query("SELECT * FROM usuarios");
       while ($objeto = $sql->fetch_object()) {
-          array_push($arrRespuesta, $objeto);
+          array_push($respuesta, $objeto);
       }
-      return $arrRespuesta;
+      return $respuesta;
   }
 
 }

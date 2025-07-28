@@ -1,8 +1,4 @@
 <?php
-$ruta = explode("/", $_GET['views']);
-//if (!isset($ruta[1]) || $ruta[1]=="") { //si no existe la informacion
-    //header ("location: " .BASE_URL. "bienes");
-//}
 
     $curl = curl_init(); 
       curl_setopt_array($curl, array(
@@ -101,7 +97,7 @@ $ruta = explode("/", $_GET['views']);
   <tbody>';  
 
        $contador = 1;
-      foreach ($usuarios as $usuario) {
+      foreach ($contenido as $usuario) {
              if ($usuario->estado = 1) {
       $usuario->estado = "activo";
    } elseif($usuario->estado = 0){
