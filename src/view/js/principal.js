@@ -228,10 +228,53 @@ function validar_datos_imputs_password(){
     }
 
 } 
+
 async function actualizar_password() {
+    const id = document.getElementById('data').value;
+    const token = document.getElementById('data2').value;
+    const password = document.getElementById('password').value;
+    
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('token', token);
+    formData.append('password', password);
+    formData.append('sesion', '');
+    
+    try {
+        let respuesta = await fetch(base_url_server + 'src/control/Usuario.php?tipo=actualizar_password_reset', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+        
+        let json = await respuesta.json();
+        
+        if (json.status) {
+            await Swal.fire({
+                type: 'success',
+                title: '¡Contraseña actualizada!',
+                text: 'Tu contraseña ha sido actualizada correctamente. Serás redirigido al login.',
+                confirmButtonClass: 'btn btn-confirm mt-2',
+                timer: 3000,
+                timerProgressBar: true
+            });
+            
+            // Redirigir al login después de 2 segundos
+            setTimeout(() => {
+                location.replace(base_url + "login");
+            }, 2000);
+            
+        } else {
+            throw new Error(json.mensaje || 'Error al actualizar la contraseña');
+        }
+        
+    } catch (error) {
+        console.log("Error al actualizar contraseña: " + error);
+        throw error;
+    }
+}
     //enviar informacion de password y id al controlador
     //recibir informacion y incriptar la nueva comtraseña grabar en base de datos 
     // actualizar campo de reset_password =0 y token password=''
     //notificar al usuario sobre el estado del proceso
-
-}
