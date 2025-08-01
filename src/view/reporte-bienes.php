@@ -94,8 +94,8 @@ foreach ($headers as $columna => $titulo) {
     // Aplicar estilo a los encabezados
     $activeWorksheet->getStyle($columna . $fila)->getFont()
         ->setBold(true)
-        ->setSize(12)
-        ->setName('Arial');
+        ->setSize(11)
+        ->setName('Calibri');
     
     $activeWorksheet->getStyle($columna . $fila)->getAlignment()
         ->setHorizontal(Alignment::HORIZONTAL_CENTER)
@@ -144,8 +144,8 @@ foreach ($bienes as $bien) {
             ->setBorderStyle(Border::BORDER_THIN);
         
         $activeWorksheet->getStyle($columna . $fila)->getFont()
-            ->setName('Arial')
-            ->setSize(10);
+            ->setName('Calibri')
+            ->setSize(9);
         
         // Alineación específica por columna
         if ($columna == 'A' || $columna == 'J' || $columna == 'N') {
@@ -202,7 +202,7 @@ header('Cache-Control: max-age=0');
 header('Expires: 0');
 header('Pragma: public');
 
-// Guardar directamente en la salida (descarga)
+// Guardar directamente en la salida 
 $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
 exit;
